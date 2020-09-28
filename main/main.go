@@ -20,7 +20,7 @@ func apiHandler(w http.ResponseWriter, r *http.Request) {
 	if artErr == nil && adsErr == nil {
 		res = modules.MergeArticlesWithMarketing(articles.Response.Items, ads.Response.Items)
 	}
-	resJSON, resErr := json.Marshal(res)
+	resJSON, resErr := json.Marshal(res.Items)
 	if resErr == nil {
 		w.Write(resJSON)
 	}
