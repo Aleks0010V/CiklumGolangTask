@@ -41,3 +41,15 @@ type Ad struct {
 	Title string
 	CleanImage string
 }
+
+type Response struct {
+	Items []ResponseItem
+}
+
+type ResponseItem struct {
+	Articles []Article
+	ContentMarketing interface{}  // can be either Ad type or EmptyAd type
+}
+
+type EmptyAd map[string]string
+var EAd = EmptyAd {"Type": "Ad"}

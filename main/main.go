@@ -1,7 +1,7 @@
 package main
 
 import (
-	"CicklumGolangTask/modules"
+	"CiklumGolangTask/modules"
 	"fmt"
 	"log"
 	"net/http"
@@ -11,11 +11,16 @@ func apiHandler(w http.ResponseWriter, r *http.Request) {
 	var (
 		articles modules.ArticlesResponse
 		ads modules.ContentMarketingResponse
+		res modules.Response
 	)
 	artErr := articles.FetchArticles()
 	adsErr := ads.FetchContentMarketingData()
-	fmt.Println(articles, artErr)
-	fmt.Println(ads, adsErr)
+
+	if artErr == nil && adsErr == nil {
+		res = modules.MergeArticlesWithMarketing(articles.Response.Items, ads.Response.Items)
+	}
+
+	fmt.Println(res)
 }
 
 func handleRequests() {

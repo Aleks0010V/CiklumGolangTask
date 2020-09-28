@@ -2,16 +2,12 @@ package modules
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
 )
 
 func (ar *ArticlesResponse)FetchArticles () error{
-	var (
-		err error
-	)
 
 	client := http.DefaultClient
 	resp, err := client.Get("https://storage.googleapis.com/aller-structure-task/articles.json")
@@ -26,20 +22,13 @@ func (ar *ArticlesResponse)FetchArticles () error{
 	}
 	defer resp.Body.Close()
 
-	if isValid := json.Valid(body); isValid {
-		err = json.Unmarshal(body, ar)
-		return err
-	} else {
-		return errors.New("articles JSON is not valid")
-	}
+	err = json.Unmarshal(body, ar)
+	return err
 }
 
 func (ad *ContentMarketingResponse)FetchContentMarketingData() error {
-	var (
-		err error
-	)
-
 	client := http.DefaultClient
+
 	resp, err := client.Get("https://storage.googleapis.com/aller-structure-task/contentmarketing.json")
 	if err != nil {
 		fmt.Println("Articles error")
@@ -52,10 +41,25 @@ func (ad *ContentMarketingResponse)FetchContentMarketingData() error {
 	}
 	defer resp.Body.Close()
 
-	if isValid := json.Valid(body); isValid {
-		err = json.Unmarshal(body, ad)
-		return err
-	} else {
-		return errors.New("articles JSON is not valid")
+	err = json.Unmarshal(body, ad)
+	return err
+}
+
+func MergeArticlesWithMarketing (articles []Article, ads []Ad) Response{
+	// by spec we need map each 5 articles to 1 ad, so the number of articles must be no less then 5*len(ads)
+	if len(articles) < len(ads) * 5{
+		result := Response{}
+		return result
 	}
+
+	result := Response{
+		Items: make([]ResponseItem, len(ads)),
+	}
+	for adIndex, ad := range ads {
+		result.Items[adIndex].ContentMarketing = ad
+		result.Items[adIndex].Articles = make([]Article, 5)
+		result.Items[adIndex].Articles = articles[5*adIndex : 5*adIndex+5]
+	}
+
+	return result
 }
