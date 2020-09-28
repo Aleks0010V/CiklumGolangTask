@@ -2,7 +2,7 @@ package main
 
 import (
 	"CiklumGolangTask/modules"
-	"fmt"
+	"encoding/json"
 	"log"
 	"net/http"
 )
@@ -13,14 +13,17 @@ func apiHandler(w http.ResponseWriter, r *http.Request) {
 		ads modules.ContentMarketingResponse
 		res modules.Response
 	)
+	w.Header().Set("content-type", "application/json")
 	artErr := articles.FetchArticles()
 	adsErr := ads.FetchContentMarketingData()
 
 	if artErr == nil && adsErr == nil {
 		res = modules.MergeArticlesWithMarketing(articles.Response.Items, ads.Response.Items)
 	}
-
-	fmt.Println(res)
+	resJSON, resErr := json.Marshal(res)
+	if resErr == nil {
+		w.Write(resJSON)
+	}
 }
 
 func handleRequests() {

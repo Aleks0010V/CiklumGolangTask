@@ -55,10 +55,31 @@ func MergeArticlesWithMarketing (articles []Article, ads []Ad) Response{
 	result := Response{
 		Items: make([]ResponseItem, len(ads)),
 	}
+	// map all ads
 	for adIndex, ad := range ads {
 		result.Items[adIndex].ContentMarketing = ad
 		result.Items[adIndex].Articles = make([]Article, 5)
 		result.Items[adIndex].Articles = articles[5*adIndex : 5*adIndex+5]
+	}
+	articles = articles[len(ads) * 5 : ]
+
+	// map all other articles with empty ad
+	for ;; {
+		if len(articles) >= 5 {
+			nextResponseItem := ResponseItem{
+				Articles:         articles[:5],
+				ContentMarketing: EAd,  // empty Ad
+			}
+			result.Items = append(result.Items, nextResponseItem)
+			articles = articles[5:]
+		} else {
+			nextResponseItem := ResponseItem{
+				Articles:         articles,
+				ContentMarketing: EAd,  // empty Ad
+			}
+			result.Items = append(result.Items, nextResponseItem)
+			break
+		}
 	}
 
 	return result
