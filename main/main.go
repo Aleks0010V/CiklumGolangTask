@@ -3,7 +3,6 @@ package main
 import (
 	"CiklumGolangTask/modules"
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 )
@@ -18,20 +17,20 @@ func listApiHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("content-type", "application/json")
 	err = articles.FetchArticles()
 	if err != nil {
-		log.Fatal(fmt.Sprintf("Articles was not received: %v", err))
+		log.Fatalf("Articles was not received: %v", err)
 	}
 	err = ads.FetchContentMarketingData()
 	if err != nil {
-		log.Fatal(fmt.Sprintf("Articles was not received: %v", err))
+		log.Fatalf("Articles was not received: %v", err)
 	}
 
-	if err == nil { // ToDo - why err is always nil ?
-		res.MergeArticlesWithMarketing(articles.Response.Items, ads.Response.Items, 6)
-	}
+	res.MergeArticlesWithMarketing(articles.Response.Items, ads.Response.Items, 6)
 	resJSON, err := json.Marshal(res.Items)
 	if err == nil {
 		_, err := w.Write(resJSON)
-		log.Fatal(fmt.Sprintf("JSON was not sent: %v", err))
+		if err != nil {
+			log.Fatalf("JSON was not sent: %v", err)
+		}
 	}
 }
 
