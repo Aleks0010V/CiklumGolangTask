@@ -45,17 +45,14 @@ func (ad *ContentMarketingResponse)FetchContentMarketingData() error {
 	return err
 }
 
-func MergeArticlesWithMarketing (articles []Article, ads []Ad) Response{
+func (result *ResponseByObjects)MergeArticlesWithMarketing (articles []Article, ads []Ad) {
 	// by spec we need map each 5 articles to 1 ad, so the number of articles must be no less then 5*len(ads)
 	if len(articles) < len(ads) * 5{
-		result := Response{}
-		return result
+		return
 	}
 
-	result := Response{
-		Items: make([]ResponseItem, len(ads)),
-	}
 	// map all ads
+	result.Items = make([]ResponseItem, len(ads))
 	for adIndex, ad := range ads {
 		result.Items[adIndex].ContentMarketing = ad
 		result.Items[adIndex].Articles = make([]Article, 5)
@@ -81,6 +78,12 @@ func MergeArticlesWithMarketing (articles []Article, ads []Ad) Response{
 			break
 		}
 	}
+}
 
-	return result
+func (result *ResponseByList)MergeArticlesWithMarketing (articles []Article, ads []Ad) {
+	// by spec we need map each 5 articles to 1 ad, so the number of articles must be no less then 5*len(ads)
+	if len(articles) < len(ads) * 5{
+		return
+	}
+
 }

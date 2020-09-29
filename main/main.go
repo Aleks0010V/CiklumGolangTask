@@ -11,14 +11,16 @@ func apiHandler(w http.ResponseWriter, r *http.Request) {
 	var (
 		articles modules.ArticlesResponse
 		ads modules.ContentMarketingResponse
-		res modules.Response
+		res modules.ResponseByObjects
+		i modules.MarketingResponse
 	)
+	i = &res
 	w.Header().Set("content-type", "application/json")
 	artErr := articles.FetchArticles()
 	adsErr := ads.FetchContentMarketingData()
 
 	if artErr == nil && adsErr == nil {
-		res = modules.MergeArticlesWithMarketing(articles.Response.Items, ads.Response.Items)
+		i.MergeArticlesWithMarketing(articles.Response.Items, ads.Response.Items)
 	}
 	resJSON, resErr := json.Marshal(res.Items)
 	if resErr == nil {

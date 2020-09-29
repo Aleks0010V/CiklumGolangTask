@@ -1,54 +1,62 @@
 package modules
 
+type MarketingResponse interface {
+	MergeArticlesWithMarketing (articles []Article, ads []Ad)
+}
+
 
 // data types for response from articles API
 type ArticlesResponse struct {
-	HttpStatus int
-	Response ArticlesList
+	HttpStatus int  `json:"http_status"`
+	Response ArticlesList  `json:"response"`
 }
 
 type ArticlesList struct {
-	Items []Article
+	Items []Article  `json:"items"`
 }
 
 type Article struct {
-	Type string
-	HarvesterId string
-	Cerebro_score float32  // ToDo - rename this field, Unmarshal doesn't recognize it
-	URL string
-	Title string
-	CleanImage string
+	Type string  `json:"type"`
+	HarvesterId string  `json:"harvester_id"`
+	Cerebro_score float32  `json:"cerebro-score"`
+	URL string  `json:"url"`
+	Title string  `json:"title"`
+	CleanImage string  `json:"cleanImage"`
 }
 
 
 // data types for response from content marketing API
 type ContentMarketingResponse struct {
-	HttpStatus int
-	Response AdsList
+	HttpStatus int  `json:"http_status"`
+	Response AdsList  `json:"response"`
 }
 
 type AdsList struct {
-	Items []Ad
+	Items []Ad  `json:"items"`
 }
 
 type Ad struct {
-	Type string
-	HarvesterId string
-	CommercialPartner string
-	LogoURL string
-	Cerebro_score float32  // ToDo - rename this field, Unmarshal doesn't recognize it
-	URL string
-	Title string
-	CleanImage string
+	Type string  `json:"type"`
+	HarvesterId string  `json:"harvester_id"`
+	CommercialPartner string  `json:"commercial_partner"`
+	LogoURL string  `json:"logo_url"`
+	Cerebro_score float32 `json:"cerebro-score"`
+	URL string  `json:"url"`
+	Title string  `json:"title"`
+	CleanImage string  `json:"cleanImage"`
 }
 
-type Response struct {
-	Items []ResponseItem
+type ResponseByObjects struct {
+	Items []ResponseItem  `json:"items"`
+}
+
+type ResponseByList struct {
+	Items []interface{}  `json:"items"`  // just a slice of articles and ads by pattern "5art-1ad"
 }
 
 type ResponseItem struct {
-	Articles []Article
-	ContentMarketing interface{}  // can be either Ad type or EmptyAd type
+	Articles []Article  `json:"articles"`
+	ContentMarketing interface{}  `json:"content_marketing"`  // can be either Ad type or EmptyAd type
 }
 
 type EmptyAd map[string]string
