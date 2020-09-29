@@ -2,13 +2,12 @@ package modules
 
 func (result *ResponseByList) MergeArticlesWithMarketing(articles []Article, contentMarketing []ContentMarketing,
 	contentMarketingPosition int) {
-	// by spec we need map each 5 articles to 1 ad, so the number of articles must be no less then 5*len(contentMarketing)
-	if len(articles) < len(contentMarketing)*contentMarketingPosition {
-		return
-	}
 
 	result.Items = make([]interface{}, 0)
-	if contentMarketingPosition < 2 { // ToDo - change alg and remove this shit
+
+	// it doesn't make any sense to place marketing object on every 1st position,
+	// 'cause we will have a list of Marketing objects followed by {"type": "Ad"} objects
+	if contentMarketingPosition < 2 {
 		return
 	}
 
@@ -22,5 +21,11 @@ func (result *ResponseByList) MergeArticlesWithMarketing(articles []Article, con
 		} else {
 			result.Items = append(result.Items, articles[i])
 		}
+	}
+
+	// if there is a situation, that we have more Marketing objects that articles,
+	// I will simply add all of them to the end
+	for ; cmCounter < len(contentMarketing); cmCounter++ {
+		result.Items = append(result.Items, contentMarketing[cmCounter])
 	}
 }
