@@ -86,4 +86,31 @@ func (result *ResponseByList)MergeArticlesWithMarketing (articles []Article, ads
 		return
 	}
 
+	var iItems uint16 = 0
+	// I want to allocate exactly needed amount of memory
+	// for each 5 articles I need to add 1 add. If len(articles) is not a multiple of 5,
+	// I will add 1 memory cell to be sure everything will fit
+	itemsLength := len(articles) + len(articles) / 5 + 1
+	result.Items = make([]interface{}, itemsLength)
+
+	for ;; {
+		var i = 0
+		for ; i < len(articles) && i < 5; i++{
+			result.Items[iItems] = articles[i]
+			iItems++
+		}
+		articles = articles[i:]
+
+		if len(ads) > 0 {
+			result.Items[iItems] = ads[0]
+			iItems++
+			ads = ads[1:]
+		} else {
+			result.Items[iItems] = EAd
+			iItems++
+			ads = []Ad{}
+		}
+
+		if len(ads) == 0 && len(articles) == 0 {break}
+	}
 }
