@@ -12,7 +12,7 @@ func (result *ResponseByList) MergeArticlesWithMarketing(articles []Article, con
 	}
 
 	cmCounter := 0
-	for i := 0; i < len(articles); i++ { // "every N-th position" pattern
+	for i := 0; i < len(articles); i++ { // probably, not the best implementation of "every N-th position" pattern
 		if (i+1)%contentMarketingPosition == 0 && cmCounter < len(contentMarketing) {
 			result.Items = append(result.Items, contentMarketing[cmCounter])
 			cmCounter++

@@ -40,17 +40,8 @@ type ContentMarketing struct {
 	CleanImage        string  `json:"cleanImage"`
 }
 
-type ResponseByObjects struct {
-	Items []ResponseItem `json:"items"`
-}
-
 type ResponseByList struct {
 	Items []interface{} `json:"items"` // just a slice of articles and ads by pattern "5art-1ad"
-}
-
-type ResponseItem struct {
-	Articles         []Article   `json:"articles"`
-	ContentMarketing interface{} `json:"content_marketing"` // can be either ContentMarketing type or EmptyAd type
 }
 
 type EmptyAd struct {
