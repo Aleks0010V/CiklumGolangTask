@@ -2,45 +2,43 @@ package modules
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 )
 
 func (ar *ArticlesResponse) FetchArticles() error {
 
-	client := http.DefaultClient
-	resp, err := client.Get("https://storage.googleapis.com/aller-structure-task/articles.json")
+	resp, err := http.Get("https://storage.googleapis.com/aller-structure-task/articles.json")
 	if err != nil {
-		fmt.Println("Articles error")
+		log.Printf("Articles fetching error: %v", err)
 		return err
 	}
 	body, err := ioutil.ReadAll(resp.Body)
+	defer resp.Body.Close()
 	if err != nil {
-		fmt.Println("Articles error")
+		log.Printf("Articles fetching error: %v", err)
 		return err
 	}
-	defer resp.Body.Close()
 
 	err = json.Unmarshal(body, ar)
 	return err
 }
 
-func (ad *ContentMarketingResponse) FetchContentMarketingData() error {
-	client := http.DefaultClient
+func (cm *ContentMarketingResponse) FetchContentMarketingData() error {
 
-	resp, err := client.Get("https://storage.googleapis.com/aller-structure-task/contentmarketing.json")
+	resp, err := http.Get("https://storage.googleapis.com/aller-structure-task/contentmarketing.json")
 	if err != nil {
-		fmt.Println("Articles error")
+		log.Printf("Marketing fetching error: %v", err)
 		return err
 	}
 	body, err := ioutil.ReadAll(resp.Body)
+	defer resp.Body.Close()
 	if err != nil {
-		fmt.Println("Articles error")
+		log.Printf("Marketing fetching error: %v", err)
 		return err
 	}
-	defer resp.Body.Close()
 
-	err = json.Unmarshal(body, ad)
+	err = json.Unmarshal(body, cm)
 	return err
 }
