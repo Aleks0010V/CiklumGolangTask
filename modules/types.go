@@ -54,7 +54,7 @@ type ResponseItem struct {
 }
 
 type EmptyAd struct {
-	Type  string `json:"type"`
+	Type string `json:"type"`
 }
 
 var EAd = EmptyAd{Type: "Ad"}
