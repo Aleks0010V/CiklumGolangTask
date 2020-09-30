@@ -35,6 +35,7 @@ func listApiHandler(w http.ResponseWriter, r *http.Request) {
 func handleRequests() {
 	listeningString := ":8888"
 	http.HandleFunc("/", listApiHandler)
+	log.Print("STARTING API")
 	log.Fatal(http.ListenAndServe(listeningString, nil))
 }
 

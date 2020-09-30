@@ -5,9 +5,10 @@ import (
 	"testing"
 )
 
+// testing data merging for pattern "5art - 1cM"
 func TestMergeArticlesWithMarketing(t *testing.T) {
 	var response ResponseByList
-	articles := make([]Article, 18)
+	articles := make([]Article, 15)
 	marketingContent := make([]ContentMarketing, 2)
 
 	testArticle := Article{
@@ -30,7 +31,7 @@ func TestMergeArticlesWithMarketing(t *testing.T) {
 		CleanImage:        "https://dbstatic.no/72043321.jpg?imageId=72043321&x=0.000000&y=2.444988&cropw=100.000000&croph=80.440098",
 	}
 
-	for i := 0; i < 18; i++ {
+	for i := 0; i < 15; i++ {
 		articles[i] = testArticle
 	}
 	for i := 0; i < 2; i++ {
@@ -48,6 +49,9 @@ func TestMergeArticlesWithMarketing(t *testing.T) {
 	}
 	if response.Items[len(response.Items)-1] != EAd {
 		t.Error("Pattern is broken in empty ad part")
+	}
+	if len(response.Items) != len(articles)+len(articles)/6+1 {
+		t.Error("Need to check if all input elements are in result")
 	}
 	_, err := json.Marshal(response.Items)
 	if err != nil {
