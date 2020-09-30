@@ -27,7 +27,9 @@ func listApiHandler(w http.ResponseWriter, r *http.Request) {
 	if err == nil {
 		_, err := w.Write(resJSON)
 		if err != nil {
-			log.Fatalf("JSON was not sent: %v", err)
+			log.Printf("%v %v %v : JSON was not sent: %v", r.Method, r.Host, r.URL.Path, err)
+		} else {
+			log.Printf("%v %v %v : OK", r.Method, r.Host, r.URL.Path)
 		}
 	}
 }
