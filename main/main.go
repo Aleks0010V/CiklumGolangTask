@@ -9,6 +9,7 @@ import (
 )
 
 var cmPosition = 5 // position of Content Marketing in pattern
+var listeningString = ":8888" // addr on machine to start API
 
 func listApiHandler(w http.ResponseWriter, r *http.Request) {
 	var (
@@ -48,9 +49,8 @@ func listApiHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func handleRequests() {
-	listeningString := ":8888"
 	http.HandleFunc("/", listApiHandler)
-	log.Print("STARTING API")
+	log.Printf("STARTING API on port %s", listeningString[1:])
 	log.Fatal(http.ListenAndServe(listeningString, nil))
 }
 
