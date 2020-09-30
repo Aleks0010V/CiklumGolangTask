@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"sync"
 )
 
 func listApiHandler(w http.ResponseWriter, r *http.Request) {
@@ -13,14 +14,25 @@ func listApiHandler(w http.ResponseWriter, r *http.Request) {
 		cm       modules.ContentMarketingResponse
 		res      modules.ResponseByList
 		err      error
+		wg       sync.WaitGroup
 	)
 	w.Header().Set("content-type", "application/json")
-	if err = articles.FetchArticles(); err != nil {
-		log.Fatalf("Articles was not received: %v", err)
-	}
-	if err = cm.FetchContentMarketingData(); err != nil {
-		log.Fatalf("Articles was not received: %v", err)
-	}
+
+	wg.Add(2)
+	go func() {
+		if err = articles.FetchArticles(); err != nil {
+			log.Fatalf("Articles was not received: %v", err)
+		}
+		wg.Done()
+	}()
+
+	go func() {
+		if err = cm.FetchContentMarketingData(); err != nil {
+			log.Fatalf("ContentMarketing was not received: %v", err)
+		}
+		wg.Done()
+	}()
+	wg.Wait()
 
 	res.MergeArticlesWithMarketing(articles.Response.Items, cm.Response.Items, 6)
 	resJSON, err := json.Marshal(res.Items)
