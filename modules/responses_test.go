@@ -2,11 +2,23 @@ package modules
 
 import (
 	"encoding/json"
+	"log"
+	"sync"
 	"testing"
 )
 
-// testing data merging for pattern "5art - 1cM"
-func TestMergeArticlesWithMarketing(t *testing.T) {
+func contains(arr []interface{}, toCheck interface{}) bool {
+	for _, obj := range arr {
+		if obj == toCheck {
+			return true
+		}
+	}
+	return false
+}
+
+var cmPosition = 5 // position of Content Marketing in pattern
+
+func TestMergeArticlesWithMarketingAlg(t *testing.T) {
 	var response ResponseByList
 	articles := make([]Article, 15)
 	marketingContent := make([]ContentMarketing, 2)
@@ -38,25 +50,63 @@ func TestMergeArticlesWithMarketing(t *testing.T) {
 		marketingContent[i] = testMC
 	}
 
-	response.MergeArticlesWithMarketing(articles, marketingContent, 6)
-	for i := 0; i < 5; i++ {
+	response.MergeArticlesWithMarketing(articles, marketingContent, cmPosition)
+	for i := 0; i < cmPosition; i++ {
 		if response.Items[i] != testArticle {
 			t.Error("Pattern is broken in articles part")
 		}
 	}
-	if response.Items[5] != testMC {
+	if response.Items[cmPosition] != testMC {
 		t.Error("Pattern is broken in MC part")
-	}
-	if response.Items[len(response.Items)-1] != EAd {
-		t.Error("Pattern is broken in empty ad part")
-	}
-	if len(response.Items) != len(articles)+len(articles)/6+1 {
-		t.Error("Need to check if all input elements are in result")
 	}
 	_, err := json.Marshal(response.Items)
 	if err != nil {
 		t.Fatalf("Error while JSON encoding: %v", err)
 	} else {
 		t.Log("JSON is valid")
+	}
+}
+
+func TestMergeArticlesWithMarketing(t *testing.T) {
+	var (
+		articles ArticlesResponse
+		cm       ContentMarketingResponse
+		res      ResponseByList
+		err      error
+		wg       sync.WaitGroup
+	)
+
+	wg.Add(2)
+	go func() {
+		if err = articles.FetchArticles(); err != nil {
+			t.Fatalf("Articles was not received: %v", err)
+		} else {
+			t.Log("Articles received successfully")
+		}
+		wg.Done()
+	}()
+
+	go func() {
+		if err = cm.FetchContentMarketingData(); err != nil {
+			t.Fatalf("ContentMarketing was not received: %v", err)
+		} else {
+			t.Log("ContentMarketing received successfully")
+		}
+		wg.Done()
+	}()
+	wg.Wait()
+
+	res.MergeArticlesWithMarketing(articles.Response.Items, cm.Response.Items, cmPosition)
+
+	for i, art := range articles.Response.Items {
+		if included := contains(res.Items, art); included == false {
+			log.Printf("Article %v not in result", i)
+		}
+	}
+
+	for i, cmObj := range cm.Response.Items {
+		if included := contains(res.Items, cmObj); included == false {
+			log.Printf("CM %v not in result", i)
+		}
 	}
 }

@@ -8,6 +8,8 @@ import (
 	"sync"
 )
 
+var cmPosition = 5 // position of Content Marketing in pattern
+
 func listApiHandler(w http.ResponseWriter, r *http.Request) {
 	var (
 		articles modules.ArticlesResponse
@@ -34,9 +36,8 @@ func listApiHandler(w http.ResponseWriter, r *http.Request) {
 	}()
 	wg.Wait()
 
-	res.MergeArticlesWithMarketing(articles.Response.Items, cm.Response.Items, 6)
-	resJSON, err := json.Marshal(res.Items)
-	if err == nil {
+	res.MergeArticlesWithMarketing(articles.Response.Items, cm.Response.Items, cmPosition)
+	if resJSON, err := json.Marshal(res.Items); err == nil {
 		_, err := w.Write(resJSON)
 		if err != nil {
 			log.Printf("%v %v %v : JSON was not sent: %v", r.Method, r.Host, r.URL.Path, err)
