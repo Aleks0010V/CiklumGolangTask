@@ -12,7 +12,7 @@ type ArticlesList struct {
 
 type Article struct {
 	Type          string  `json:"type"`
-	HarvesterId   string  `json:"harvester_id"`
+	HarvesterId   string  `json:"harvesterId"`
 	Cerebro_score float32 `json:"cerebro-score"`
 	URL           string  `json:"url"`
 	Title         string  `json:"title"`
@@ -31,9 +31,9 @@ type AdsList struct {
 
 type ContentMarketing struct {
 	Type              string  `json:"type"`
-	HarvesterId       string  `json:"harvester_id"`
-	CommercialPartner string  `json:"commercial_partner"`
-	LogoURL           string  `json:"logo_url"`
+	HarvesterId       string  `json:"harvesterId"`
+	CommercialPartner string  `json:"commercialPartner"`
+	LogoURL           string  `json:"logoURL"`
 	Cerebro_score     float32 `json:"cerebro-score"`
 	URL               string  `json:"url"`
 	Title             string  `json:"title"`
