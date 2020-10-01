@@ -8,7 +8,7 @@ import (
 	"sync"
 )
 
-var cmPosition = 5 // position of Content Marketing in pattern
+var cmPosition = 5            // position of Content Marketing in pattern
 var listeningString = ":8888" // addr on machine to start API
 
 func listApiHandler(w http.ResponseWriter, r *http.Request) {
@@ -49,6 +49,7 @@ func listApiHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func handleRequests() {
+	// ToDO - ideally, it should have graceful shutdown method
 	http.HandleFunc("/", listApiHandler)
 	log.Printf("STARTING API on port %s", listeningString[1:])
 	log.Fatal(http.ListenAndServe(listeningString, nil))

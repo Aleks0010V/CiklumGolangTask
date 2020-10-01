@@ -37,12 +37,12 @@ func TestMergeArticlesWithMarketingAlg(t *testing.T) {
 		CommercialPartner: "Norsk",
 		LogoURL:           "https://www.dagbladet.no/files/2018/11/20/norsk%20tipping%20logo%202.png",
 		Article: Article{
-			Type:              "ContentMarketing",
-			HarvesterId:       "norsk-tipping.no/180120",
-			Cerebro_score:     0.1,
-			URL:               "https://www.norsk-tipping.no/artikler/lotto180120?WT.mc_id=Dagbladet_dagbladet_ekomm_lotto_vinnerhistorielotto_DB_ekomm&utm_source=dagbladet&utm_medium=ekomm&utm_content=lotto_vinnerhistorielotto_DB&utm_campaign=ekomm",
-			Title:             "Disse tre vant 5 millioner hver!",
-			CleanImage:        "https://dbstatic.no/72043321.jpg?imageId=72043321&x=0.000000&y=2.444988&cropw=100.000000&croph=80.440098",
+			Type:          "ContentMarketing",
+			HarvesterId:   "norsk-tipping.no/180120",
+			Cerebro_score: 0.1,
+			URL:           "https://www.norsk-tipping.no/artikler/lotto180120?WT.mc_id=Dagbladet_dagbladet_ekomm_lotto_vinnerhistorielotto_DB_ekomm&utm_source=dagbladet&utm_medium=ekomm&utm_content=lotto_vinnerhistorielotto_DB&utm_campaign=ekomm",
+			Title:         "Disse tre vant 5 millioner hver!",
+			CleanImage:    "https://dbstatic.no/72043321.jpg?imageId=72043321&x=0.000000&y=2.444988&cropw=100.000000&croph=80.440098",
 		},
 	}
 

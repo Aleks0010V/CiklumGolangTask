@@ -31,8 +31,8 @@ type AdsList struct {
 
 type ContentMarketing struct {
 	Article
-	CommercialPartner string  `json:"commercialPartner"`
-	LogoURL           string  `json:"logoURL"`
+	CommercialPartner string `json:"commercialPartner"`
+	LogoURL           string `json:"logoURL"`
 }
 
 type ResponseByList struct {
