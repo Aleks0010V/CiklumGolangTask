@@ -12,6 +12,12 @@ var cmPosition = 5            // position of Content Marketing in pattern
 var listeningString = ":8888" // addr on machine to start API
 
 func listApiHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "GET" {
+		w.WriteHeader(405)
+		log.Printf("%v %v %v : 405 Method Not Allowed", r.Method, r.Host, r.URL.Path)
+		return
+	}
+
 	var (
 		articles modules.ArticlesResponse
 		cm       modules.ContentMarketingResponse
@@ -43,7 +49,7 @@ func listApiHandler(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			log.Printf("%v %v %v : JSON was not sent: %v", r.Method, r.Host, r.URL.Path, err)
 		} else {
-			log.Printf("%v %v %v : OK", r.Method, r.Host, r.URL.Path)
+			log.Printf("%v %v %v : 200 OK", r.Method, r.Host, r.URL.Path)
 		}
 	}
 }

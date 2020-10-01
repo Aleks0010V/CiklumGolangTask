@@ -30,7 +30,7 @@ Host: 127.0.0.1:8888
     <tbody>
         <tr>
             <td>/ (root)</td>
-            <td>Any method</td>
+            <td>GET</td>
             <td>List of objects</td>
         </tr>
     </tbody>
