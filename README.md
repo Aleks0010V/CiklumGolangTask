@@ -13,7 +13,25 @@ go run CiklumGolangTask/main
 docker run -p 8888:8888 --rm golang/api_task
 </code></pre>
 
-### Calling API example
+## Calling API example
+### GET request
 <pre><code>GET / HTTP/1.1 
 Host: 127.0.0.1:8888
 </code></pre>
+### URLs table
+<table>
+    <thead>
+        <tr>
+            <th>Path</th>
+            <th>Method</th>
+            <th>Response</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>/ (root)</td>
+            <td>Any method</td>
+            <td>List of objects</td>
+        </tr>
+    </tbody>
+</table>
