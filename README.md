@@ -12,6 +12,8 @@ go run CiklumGolangTask/main
 <pre><code>docker build -t golang/api_task .
 docker run -p 8888:8888 --rm golang/api_task
 </code></pre>
+### Testing
+<pre><code>go test -v CiklumGolangTask/modules</code></pre>
 
 ## Calling API example
 ### GET request
